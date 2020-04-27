@@ -119,10 +119,18 @@ console.log(returnArgumentsArray(1, 2, 3));
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
+
+function sumForBind(a, b) {
+    return a + b;
 }
 
-export {
+let bindFunction = (fn, ...args) => sumForBind.bind(null, ...args);
+
+var newSum = bindFunction(sumForBind, 2, 4);
+
+console.log(newSum());
+
+export { 
     returnFirstArgument,
     sumWithDefaults,
     returnArgumentsArray,
