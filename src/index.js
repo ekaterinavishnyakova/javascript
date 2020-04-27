@@ -17,6 +17,8 @@ function returnFirstArgument(a) {
 }
 let result = returnFirstArgument('hello');
 
+result;
+
 /*
 
  2.1: Функция должна возвращать сумму переданных аргументов
@@ -78,8 +80,6 @@ resultFn;
 function returnCounter(number = 0) {
     let counterNumber = number;
 
-    //counterNumber = 0;
-
     return function() {
         return ++counterNumber;
     };
@@ -87,7 +87,7 @@ function returnCounter(number = 0) {
 
 var f = returnCounter(7);
 
-console.log(f());
+f();
 
 /*
  Задание 5 *:
@@ -102,7 +102,7 @@ function returnArgumentsArray(...args) {
     return args;
 }
 
-console.log(returnArgumentsArray(1, 2, 3));
+returnArgumentsArray(1, 2, 3);
 
 /*
  Задание 6 *:
@@ -128,7 +128,7 @@ let bindFunction = (fn, ...args) => sumForBind.bind(null, ...args);
 
 var newSum = bindFunction(sumForBind, 2, 4);
 
-console.log(newSum());
+newSum();
 
 export { 
     returnFirstArgument,
