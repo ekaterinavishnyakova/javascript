@@ -112,13 +112,13 @@ function findError(where) {
  */
 
 function deleteTextNodes(where) {
+    let elements = where.childNodes;
 
-    where.childNodes.forEach(e => {
-
-        if (e.textContent) {
-            e.textContent = ''
-        } 
-    }); 
+    for (let e of elements) {
+        if (e.nodeType === 3) {
+            where.removeChild(e);
+        }
+    }
 }
 
 /*
@@ -134,8 +134,21 @@ function deleteTextNodes(where) {
  */
 
 function deleteTextNodesRecursive (where) {
-}
+    let elements = where;
+    let array =[];
 
+    for (let e of elements.childNodes) {
+        deleteTextNodesRecursive(e);
+
+        if ( e && e.nodeType === 3) {
+            array.push(e)
+        }  
+    }
+    array.forEach( e => e.remove());
+
+    return where;
+}
+        
 /*
  Задание 7 *:
 
