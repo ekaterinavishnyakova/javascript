@@ -35,7 +35,7 @@ function removeListener(eventName, target, fn) {
 function skipDefault(eventName, target) {
     target.addEventListener(eventName, (e) => {
         e.preventDefault();
-})
+    })
 }
 
 /*
@@ -79,9 +79,13 @@ function delegate(target, fn) {
    once(document.querySelector('button'), () => console.log('обработчик выполнился!')) // добавит такой обработчик кликов для указанного элемента, который вызовется только один раз и затем удалится
  */
 function once(target, fn) {
-    target.addEventListener('click', fn, { once: true })
+    function handler() {
+        fn()
+        target.removeEventListener('click', handler);
+    }
+    target.addEventListener('click', handler);
 }
-
+    
 export {
     addListener,
     removeListener,
