@@ -43,18 +43,25 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
+filterNameInput.addEventListener('keyup', function() {
+    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    createTable();
+});
+
+addButton.addEventListener('click', () => {
+    // здесь можно обработать нажатие на кнопку "добавить cookie"
+    addCookie(addNameInput.value, addValueInput.value);
+    createTable();
+});
+
 let addCookie = (name, value) => {
     return document.cookie = `${name} = ${value}`;
 };
 
-function deleteCookie(name) {
-    document.cookie = `${name}=''; expires=''`;
-}
-
 let getCookie = () => {
     let cookie = document.cookie;
 
-    if (document.cookie) {
+    if (cookie) {
         return cookie.split('; ').reduce((prev, current)=> {
             let [name, value] = current.split('=');
 
@@ -70,15 +77,31 @@ let createTable = () => {
 
     listTable.innerHTML = '';
 
-}
+    for (let cookie in cookies) {
+        if (
+            !filterNameInput.value
+            || cookie.includes(filterNameInput.value)
+            || cookies[cookie].includes(filterNameInput.value)
+        ) {
+            let row = listTable.insertRow(-1);
+            let deleteButton = document.createElement('button');
 
-filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    createTable();
-});
+            deleteButton.textContent = 'delete';
+    
+            deleteButton.addEventListener('click', () => {
+                deleteCookie(cookie);
+                createTable();
+            })
+    
+            row.insertCell(0).textContent = cookie;
+            row.insertCell(1).textContent = cookies[cookie];
+            row.insertCell(2).prepend(deleteButton);
+    
+        }
+    }
+};
+    
+let deleteCookie = (name) => {
+    document.cookie = `${name} =; max-age=0`;
+};
 
-addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
-    addCookie(addNameInput.value, addValueInput.value);
-    createTable();
-});
