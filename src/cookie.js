@@ -59,7 +59,6 @@ let addCookie = (name, value) => {
 };
 
 let getCookie = () => {
-
     if (document.cookie) {
         return document.cookie.split('; ').reduce((prev, current)=> {
             let [name, value] = current.split('=');
