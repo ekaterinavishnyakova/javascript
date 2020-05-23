@@ -59,10 +59,9 @@ let addCookie = (name, value) => {
 };
 
 let getCookie = () => {
-    let cookie = document.cookie;
 
-    if (cookie) {
-        return cookie.split('; ').reduce((prev, current)=> {
+    if (document.cookie) {
+        return document.cookie.split('; ').reduce((prev, current)=> {
             let [name, value] = current.split('=');
 
             prev[name] = value;
@@ -70,6 +69,8 @@ let getCookie = () => {
             return prev;
         }, {})
     }
+
+    return ''
 };
 
 let createTable = () => {
@@ -104,4 +105,3 @@ let createTable = () => {
 let deleteCookie = (name) => {
     document.cookie = `${name} =; max-age=0`;
 };
-
