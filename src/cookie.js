@@ -43,17 +43,6 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    createTable();
-});
-
-addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
-    addCookie(addNameInput.value, addValueInput.value);
-    createTable();
-});
-
 let addCookie = (name, value) => {
     return document.cookie = `${name} = ${value}`;
 };
@@ -102,7 +91,19 @@ let createTable = () => {
     }
 }
 
+window.onload = createTable();
+
 let deleteCookie = (name) => {
     document.cookie = `${name} =; max-age=0`;
 };
 
+filterNameInput.addEventListener('keyup', function() {
+    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    window.onload = createTable();
+});
+
+addButton.addEventListener('click', () => {
+    // здесь можно обработать нажатие на кнопку "добавить cookie"
+    addCookie(addNameInput.value, addValueInput.value);
+    window.onload = createTable();
+});
