@@ -45,7 +45,7 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function() {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    showAllCookies(filterNameInput.value);   
+    createTable();
 });
 
 addButton.addEventListener('click', () => {
@@ -73,43 +73,36 @@ let getCookie = () => {
 };
 
 let createTable = () => {
-    let cookies = getCookie();
 
+    let cookies = getCookie();   
+    
     listTable.innerHTML = '';
         
-    for (let cookie of Object.keys(cookies)) {
-        let row = listTable.insertRow(-1);
-        let deleteButton = document.createElement('button');
-        
-        deleteButton.textContent = 'delete';
-            
-        deleteButton.addEventListener('click', () => {
-            deleteCookie(cookie);
-            createTable();
-        })
-            
-        row.insertCell(0).textContent = cookie;
-        row.insertCell(1).textContent = cookies[cookie];
-        row.insertCell(2).prepend(deleteButton);         
+    for (let cookie in cookies) {
+        if (
+            !filterNameInput.value
+            || cookie.includes(filterNameInput.value)
+            || cookies[cookie].includes(filterNameInput.value)
+        ) {
+            let row = listTable.insertRow(-1);
+            let deleteButton = document.createElement('button');
+
+            deleteButton.textContent = 'delete';
+
+            deleteButton.addEventListener('click', () => {
+                deleteCookie(cookie);
+                createTable();
+            })
+
+            row.insertCell(0).textContent = cookie;
+            row.insertCell(1).textContent = cookies[cookie];
+            row.insertCell(2).prepend(deleteButton);
+
+        }
     }
-          
-};
+}
 
 let deleteCookie = (name) => {
     document.cookie = `${name} =; max-age=0`;
 };
 
-function isMatching(full, chunk) {
-    return full.toLowerCase().includes(chunk.toLowerCase());
-}
-
-let showAllCookies = (value) => {
-    let cookies = getCookie();
-
-    listTable.innerHTML = ''; 
-    for (let cookie in cookies) {
-        if (isMatching(cookie, value) || isMatching(cookies[cookie], value)) {
-            createTable(cookie, cookies[cookie]);
-        }          
-    }
-}
